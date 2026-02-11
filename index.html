@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Graphic Designer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f0b0a;
+            --bg-card: #1a1412;
+            --burgundy: #5c2e2e;
+            --burgundy-light: #7a3f3f;
+            --gold: #c9a961;
+            --text-primary: #e5e0db;
+            --text-secondary: #b5aca5;
+            --border: #3a2e28;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Decorative border pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, 
+                var(--burgundy) 0%, 
+                var(--gold) 25%, 
+                var(--burgundy) 50%, 
+                var(--gold) 75%, 
+                var(--burgundy) 100%);
+            z-index: 1000;
+            opacity: 0.6;
+        }
+
+        /* Ornamental corners */
+        .corner-ornament {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .corner-ornament.top-left {
+            top: 20px;
+            left: 20px;
+            border-top: 2px solid var(--gold);
+            border-left: 2px solid var(--gold);
+        }
+
+        .corner-ornament.top-right {
+            top: 20px;
+            right: 20px;
+            border-top: 2px solid var(--gold);
+            border-right: 2px solid var(--gold);
+        }
+
+        .corner-ornament.bottom-left {
+            bottom: 20px;
+            left: 20px;
+            border-bottom: 2px solid var(--gold);
+            border-left: 2px solid var(--gold);
+        }
+
+        .corner-ornament.bottom-right {
+            bottom: 20px;
+            right: 20px;
+            border-bottom: 2px solid var(--gold);
+            border-right: 2px solid var(--gold);
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 100px 20px 60px;
+            position: relative;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 0.05em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 20px rgba(107, 29, 60, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--burgundy-light);
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            font-style: italic;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 40px 20px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1.1rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--gold);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Main container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        /* About section */
+        .about {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 100px;
+            padding: 60px 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            position: relative;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
+        }
+
+        .about::before,
+        .about::after {
+            content: '✦';
+            position: absolute;
+            color: var(--burgundy-light);
+            font-size: 1.5rem;
+            opacity: 0.6;
+        }
+
+        .about::before {
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .about::after {
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .about h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: var(--text-primary);
+        }
+
+        .about p {
+            font-size: 1.2rem;
+            line-height: 1.9;
+            color: var(--text-secondary);
+        }
+
+        /* Portfolio grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 380px));
+            gap: 40px;
+            margin-bottom: 100px;
+            justify-content: center;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s ease, border-color 0.4s ease;
+            animation: fadeInUp 1s ease-out backwards;
+        }
+
+        .project-card:nth-child(1) { animation-delay: 0.4s; }
+        .project-card:nth-child(2) { animation-delay: 0.5s; }
+        .project-card:nth-child(3) { animation-delay: 0.6s; }
+        .project-card:nth-child(4) { animation-delay: 0.7s; }
+        .project-card:nth-child(5) { animation-delay: 0.8s; }
+        .project-card:nth-child(6) { animation-delay: 0.9s; }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--burgundy) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--burgundy-light);
+        }
+
+        .project-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .project-image {
+            width: 100%;
+            min-height: 300px;
+            background: var(--bg-card);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-image:hover {
+            opacity: 0.9;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .project-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .project-card p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Contact section */
+        .contact {
+            text-align: center;
+            padding: 80px 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            position: relative;
+            animation: fadeInUp 1s ease-out 1s backwards;
+        }
+
+        .contact h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: var(--text-primary);
+        }
+
+        .contact p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .contact-button {
+            padding: 15px 40px;
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            text-decoration: none;
+            font-size: 1.1rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .contact-button:hover {
+            background: var(--burgundy);
+            border-color: var(--burgundy);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(107, 29, 60, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            letter-spacing: 0.1em;
+        }
+
+        /* Commissions Section */
+        .commissions {
+            margin-bottom: 100px;
+        }
+
+        .commissions h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .commission-intro {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 60px;
+        }
+
+        /* Pricing Grid */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        .pricing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--burgundy-light);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--gold);
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(92, 46, 46, 0.1) 100%);
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gold);
+            color: var(--bg-dark);
+            padding: 5px 20px;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .pricing-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .price {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .pricing-features {
+            list-style: none;
+            text-align: left;
+        }
+
+        .pricing-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-features li::before {
+            content: '✦ ';
+            color: var(--burgundy-light);
+            margin-right: 10px;
+        }
+
+        /* Commission Form */
+        .commission-form-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 60px 50px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .commission-form-container h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--text-primary);
+        }
+
+        .commission-form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 15px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--burgundy-light);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .submit-button {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 18px 50px;
+            font-size: 1.1rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Cormorant Garamond', serif;
+            margin-top: 20px;
+        }
+
+        .submit-button:hover {
+            background: var(--burgundy);
+            border-color: var(--burgundy);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(107, 29, 60, 0.4);
+        }
+
+        .form-success {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .form-success h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .form-success p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        /* Lightbox Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+            box-shadow: 0 0 50px rgba(92, 46, 46, 0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            color: var(--gold);
+            font-size: 3rem;
+            font-weight: 300;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .lightbox-close:hover {
+            color: var(--text-primary);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .corner-ornament {
+                width: 50px;
+                height: 50px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .commission-form-container {
+                padding: 40px 30px;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative corner ornaments -->
+    <div class="corner-ornament top-left"></div>
+    <div class="corner-ornament top-right"></div>
+    <div class="corner-ornament bottom-left"></div>
+    <div class="corner-ornament bottom-right"></div>
+
+    <!-- Header -->
+    <header>
+        <h1>Max Gopp</h1>
+        <p class="subtitle">Graphic Designer</p>
+        <p class="tagline">Hobby design with purpose</p>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#about">About</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#commissions">Commissions</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="container">
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="project-image" style="margin-bottom: 30px; max-width: 300px; margin-left: auto; margin-right: auto;">
+                <img src="Max.JPG" alt="Max Gopp Portrait">
+            </div>
+            <h2>About</h2>
+            <p>Hello! My name is Max Goppp, I am a senior at Shoshoni High School, and I love designing posters whenever I can. Over the past 3+ years i have been designing posters on the side, mainly using Canva; however, more recently i have taken up Affinity and have been learning the intricacies for the past few months. Please take a look at my work, and I hope to hear from you soon! </p>
+        </section>
+
+        <!-- Portfolio Section -->
+        <section id="portfolio">
+            <div class="portfolio-grid">
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="BoyWithuke.png" alt="BoyWithUke Poster Design">
+                    </div>
+                    <h3>BoyWithUke</h3>
+                    <p>.</p>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="burnout.png" alt="Burnout Album Cover">
+                    </div>
+                    <h3>Burnout</h3>
+                    <p>Any album cover you would like, I can transform it into a poster. This is one of my favorites that I've done.</p>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="sky.png" alt="The Sky Is Never Truly Dark Poster"> 
+                    </div>
+                    <h3>The Sky Is Never Truly Dark</h3>
+                    <p>Featuring a couple of photos that I took myself during the November 2025 Northern lights, I can also take photos for designs if needed.</p>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="escapet.png" alt="Escape Poster Design">
+                    </div>
+                    <h3>Escape</h3>
+                    <p>Vibrant illustrative poster exploring themes of freedom through surreal composition.</p>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="eye-design.png" alt="Eye Design - Surreal Illustration">
+                    </div>
+                    <h3>Perspective</h3>
+                    <p>Surreal illustration examining perception through cosmic symbolism and falling figures.</p>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="worlds-collide.png" alt="When Worlds Collide Typography">
+                    </div>
+                    <h3>When Worlds Collide</h3>
+                    <p>Mixed media typography piece with collage aesthetics and textured layering.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Commission Section -->
+        <section id="commissions" class="commissions">
+            <h2>Commissions</h2>
+            <p class="commission-intro">Available for select design projects. View pricing and submit a request below.</p>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Album Cover Poster</h3>
+                    <div class="price">$60</div>
+                    <ul class="pricing-features">
+                        <li>Fan-made album artwork poster</li>
+                        <li>Artist/album of your choice</li>
+                        <li>High-resolution files</li>
+                        <li>Custom design treatment</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Poster Design</h3>
+                    <div class="price">$75</div>
+                    <ul class="pricing-features">
+                        <li>Custom poster design</li>
+                        <li>High-resolution final files</li>
+                        <li>2 rounds of revisions</li>
+                        <li>Print-ready format</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="featured-badge">Most Popular</div>
+                    <h3>Album Cover</h3>
+                    <div class="price">$100</div>
+                    <ul class="pricing-features">
+                        <li>Complete album artwork</li>
+                        <li>Multiple format exports</li>
+                        <li>3 rounds of revisions</li>
+                        <li>Social media variants</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Custom Project</h3>
+                    <div class="price">Contact</div>
+                    <ul class="pricing-features">
+                        <li>Branding & identity</li>
+                        <li>Editorial design</li>
+                        <li>Custom illustrations</li>
+                        <li>Flexible pricing</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Commission Request Form -->
+            <div class="commission-form-container">
+                <h3>Request a Commission</h3>
+                <form class="commission-form" id="commissionForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="clientName">Your Name</label>
+                            <input type="text" id="clientName" name="clientName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="clientEmail">Email Address</label>
+                            <input type="email" id="clientEmail" name="clientEmail" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="projectType">Project Type</label>
+                        <select id="projectType" name="projectType" required>
+                            <option value="">Select a type...</option>
+                            <option value="poster">Poster Design - $75</option>
+                            <option value="album-poster">Album Cover Poster - $60</option>
+                            <option value="album">Album Cover - $100</option>
+                            <option value="custom">Custom Project - Contact for Pricing</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="budget">Budget (Optional)</label>
+                        <input type="text" id="budget" name="budget" placeholder="e.g., $75-100">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deadline">Desired Deadline (Optional)</label>
+                        <input type="date" id="deadline" name="deadline">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Project Description</label>
+                        <textarea id="description" name="description" rows="6" required placeholder="Tell me about your project, vision, and any specific requirements..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="references">Reference Links (Optional)</label>
+                        <textarea id="references" name="references" rows="3" placeholder="Paste any inspiration links, mood boards, or reference images..."></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-button">Submit Request</button>
+                </form>
+
+                <div class="form-success" id="formSuccess" style="display: none;">
+                    <h3>✓ Request Submitted!</h3>
+                    <p>Thank you for your commission request. I'll review it and get back to you within 24-48 hours.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; <span id="current-year"></span> Max Gopp. All rights reserved.</p>
+    </footer>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img src="" alt="Full size image" id="lightbox-img">
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Set current year dynamically
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const projectImages = document.querySelectorAll('.project-image');
+
+        // Add click event to all project images
+        projectImages.forEach(imageDiv => {
+            imageDiv.addEventListener('click', function() {
+                const img = this.querySelector('img');
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt;
+                lightbox.classList.add('active');            });
+        });
+
+        // Close lightbox when clicking anywhere on it
+        lightbox.addEventListener('click', function() {
+            this.classList.remove('active');
+        });
+
+        // Commission Form Handler
+        const commissionForm = document.getElementById('commissionForm');
+        const formSuccess = document.getElementById('formSuccess');
+
+        commissionForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get form data
+            const formData = {
+                name: document.getElementById('clientName').value,
+                email: document.getElementById('clientEmail').value,
+                projectType: document.getElementById('projectType').value,
+                budget: document.getElementById('budget').value,
+                deadline: document.getElementById('deadline').value,
+                description: document.getElementById('description').value,
+                references: document.getElementById('references').value,
+                submittedAt: new Date().toLocaleString()
+            };
+
+            // Create mailto link with all the info
+            const subject = encodeURIComponent(`Commission Request: ${formData.projectType}`);
+            const body = encodeURIComponent(`
+Commission Request Details:
+
+Name: ${formData.name}
+Email: ${formData.email}
+Project Type: ${formData.projectType}
+Budget: ${formData.budget || 'Not specified'}
+Deadline: ${formData.deadline || 'Flexible'}
+
+Project Description:
+${formData.description}
+
+References:
+${formData.references || 'None provided'}
+
+Submitted: ${formData.submittedAt}
+            `);
+
+            // Open email client with pre-filled information
+            window.location.href = `mailto:maxdesigncomm@gmail.com?subject=${subject}&body=${body}`;
+
+            // Show success message
+            commissionForm.style.display = 'none';
+            formSuccess.style.display = 'block';
+
+            // Reset form after 5 seconds
+            setTimeout(() => {
+                commissionForm.reset();
+                commissionForm.style.display = 'flex';
+                formSuccess.style.display = 'none';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

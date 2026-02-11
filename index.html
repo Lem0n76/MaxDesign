@@ -552,6 +552,11 @@
             box-shadow: 0 10px 30px rgba(107, 29, 60, 0.4);
         }
 
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .form-success {
             text-align: center;
             padding: 40px;
@@ -567,6 +572,20 @@
         .form-success p {
             font-size: 1.2rem;
             color: var(--text-secondary);
+        }
+
+        .form-error {
+            text-align: center;
+            padding: 20px;
+            background: rgba(139, 0, 0, 0.2);
+            border: 1px solid #8b0000;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .form-error p {
+            color: #ff6b6b;
+            font-size: 1.1rem;
         }
 
         /* Lightbox Modal */
@@ -865,12 +884,16 @@
                         <textarea id="references" name="references" rows="3" placeholder="Paste any inspiration links, mood boards, or reference images..."></textarea>
                     </div>
 
-                    <button type="submit" class="submit-button">Submit Request</button>
+                    <button type="submit" class="submit-button" id="submitButton">Submit Request</button>
                 </form>
 
                 <div class="form-success" id="formSuccess" style="display: none;">
                     <h3>✓ Request Submitted!</h3>
                     <p>Thank you for your commission request. I'll review it and get back to you within 24-48 hours.</p>
+                </div>
+
+                <div class="form-error" id="formError">
+                    <p>There was an error sending your request. Please try again or email me directly at maxdesigncomm@gmail.com</p>
                 </div>
             </div>
         </section>
@@ -888,9 +911,15 @@
         <img src="" alt="Full size image" id="lightbox-img">
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
+    <script>
         // Set current year dynamically
         document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Initialize EmailJS with your Public Key
+        emailjs.init('QSVruomTW0WJHENYL');
 
         // Lightbox functionality
         const lightbox = document.getElementById('lightbox');
@@ -903,7 +932,8 @@
                 const img = this.querySelector('img');
                 lightboxImg.src = img.src;
                 lightboxImg.alt = img.alt;
-                lightbox.classList.add('active');            });
+                lightbox.classList.add('active');
+            });
         });
 
         // Close lightbox when clicking anywhere on it
@@ -911,58 +941,62 @@
             this.classList.remove('active');
         });
 
-        // Commission Form Handler
+        // Commission Form Handler with EmailJS
         const commissionForm = document.getElementById('commissionForm');
         const formSuccess = document.getElementById('formSuccess');
+        const formError = document.getElementById('formError');
+        const submitButton = document.getElementById('submitButton');
 
         commissionForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
+            // Disable submit button to prevent double submission
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+
             // Get form data
-            const formData = {
-                name: document.getElementById('clientName').value,
-                email: document.getElementById('clientEmail').value,
-                projectType: document.getElementById('projectType').value,
-                budget: document.getElementById('budget').value,
-                deadline: document.getElementById('deadline').value,
+            const templateParams = {
+                from_name: document.getElementById('clientName').value,
+                from_email: document.getElementById('clientEmail').value,
+                project_type: document.getElementById('projectType').value,
+                budget: document.getElementById('budget').value || 'Not specified',
+                deadline: document.getElementById('deadline').value || 'Flexible',
                 description: document.getElementById('description').value,
-                references: document.getElementById('references').value,
-                submittedAt: new Date().toLocaleString()
+                references: document.getElementById('references').value || 'None provided',
+                submitted_at: new Date().toLocaleString()
             };
 
-            // Create mailto link with all the info
-            const subject = encodeURIComponent(`Commission Request: ${formData.projectType}`);
-            const body = encodeURIComponent(`
-Commission Request Details:
+            // Send email using EmailJS
+            emailjs.send('service_fxpyz2p', 'template_b0ym7ss', templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    
+                    // Show success message
+                    commissionForm.style.display = 'none';
+                    formSuccess.style.display = 'block';
+                    formError.style.display = 'none';
 
-Name: ${formData.name}
-Email: ${formData.email}
-Project Type: ${formData.projectType}
-Budget: ${formData.budget || 'Not specified'}
-Deadline: ${formData.deadline || 'Flexible'}
-
-Project Description:
-${formData.description}
-
-References:
-${formData.references || 'None provided'}
-
-Submitted: ${formData.submittedAt}
-            `);
-
-            // Open email client with pre-filled information
-            window.location.href = `mailto:maxdesigncomm@gmail.com?subject=${subject}&body=${body}`;
-
-            // Show success message
-            commissionForm.style.display = 'none';
-            formSuccess.style.display = 'block';
-
-            // Reset form after 5 seconds
-            setTimeout(() => {
-                commissionForm.reset();
-                commissionForm.style.display = 'flex';
-                formSuccess.style.display = 'none';
-            }, 5000);
+                    // Reset form after 5 seconds
+                    setTimeout(() => {
+                        commissionForm.reset();
+                        commissionForm.style.display = 'flex';
+                        formSuccess.style.display = 'none';
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Submit Request';
+                    }, 5000);
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    
+                    // Show error message
+                    formError.style.display = 'block';
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Submit Request';
+                    
+                    // Hide error after 10 seconds
+                    setTimeout(() => {
+                        formError.style.display = 'none';
+                    }, 10000);
+                });
         });
     </script>
 </body>
